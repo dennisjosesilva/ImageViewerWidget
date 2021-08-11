@@ -141,7 +141,7 @@ namespace ImageViewerWidget
 
   void ImageViewerWidget::mousePressEvent(QMouseEvent *e)
   {
-    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 4 };
     QPointF p_normalised = normalisePoint(p);
 
     if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
@@ -156,7 +156,7 @@ namespace ImageViewerWidget
 
   void ImageViewerWidget::mouseReleaseEvent(QMouseEvent *e)
   {
-    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 4 };
     QPointF p_normalised = normalisePoint(p);
 
     if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
@@ -171,7 +171,7 @@ namespace ImageViewerWidget
 
   void ImageViewerWidget::mouseDoubleClickEvent(QMouseEvent *e)
   {
-    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 4 };
     QPointF p_normalised = normalisePoint(p);
 
     if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
