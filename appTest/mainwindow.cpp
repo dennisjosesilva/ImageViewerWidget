@@ -64,6 +64,8 @@ MainWidget::MainWidget(QMainWindow *window)
   loadImage("../../images/Zuckerberg.pgm");
 
   connect(imageViewer_, &iv::ImageViewerWidget::imageMousePress, this, &MainWidget::imageMousePress);
+  connect(imageViewer_, &iv::ImageViewerWidget::imageMouseRelease, this, &MainWidget::imageMouseRelease);
+  connect(imageViewer_, &iv::ImageViewerWidget::imageMouseDoubleClick, this, &MainWidget::imageMouseDoubleClick);
 
   setLayout(mainLayout);
 }
@@ -82,6 +84,18 @@ void MainWidget::loadImage(const QString &fileName)
 void MainWidget::imageMousePress(const QPointF &p)
 {
   QString message = tr("mouse press at (%1, %2)").arg(p.x()).arg(p.y());
+  window_->statusBar()->showMessage(message);
+}
+
+void MainWidget::imageMouseRelease(const QPointF &p)
+{
+  QString message = tr("mouse release at (%1, %2)").arg(p.x()).arg(p.y());
+  window_->statusBar()->showMessage(message);
+}
+
+void MainWidget::imageMouseDoubleClick(const QPointF &p)
+{
+  QString message = tr("mouse double click at (%1, %2)").arg(p.x()).arg(p.y());
   window_->statusBar()->showMessage(message);
 }
 

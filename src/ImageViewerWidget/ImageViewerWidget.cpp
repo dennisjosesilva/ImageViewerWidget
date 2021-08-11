@@ -68,6 +68,7 @@ namespace ImageViewerWidget
     image_ = newImage;
     imageLabel_->setPixmap(QPixmap::fromImage(image_));
     scaleFactor_ = 1.0;
+    normalImageSize_ = QSize{newImage.size()};
 
     normalSize();
 
@@ -116,29 +117,70 @@ namespace ImageViewerWidget
       ((factor - 1) * scrollBar->pageStep() / 2));
   }
 
-  void ImageViewerWidget::mousePressEvent(QMouseEvent *e)
+  QPointF ImageViewerWidget::scrollAreaPointMap(const QPointF &p) const
   {
     QPointF scrollOffset = QPointF(scrollArea_->horizontalScrollBar()->value(), 
-      scrollArea_->verticalScrollBar()->value());
+       scrollArea_->verticalScrollBar()->value());
 
-    QPointF p = ((e->localPos() + scrollOffset) / scaleFactor_) - QPointF(2,2); 
-    
-    if (imageLabel_->rect().adjusted(0, 0, 1, 1).contains(p.x(), p.y()))
-      emit imageMousePress(p);
-    
-    update();
+    return p + scrollOffset;
+  }
+
+  QPointF ImageViewerWidget::normalisePoint(const QPointF &p) const
+  {
+    return QPointF{ p.x() / imageLabel_->size().width(), 
+      p.y() / imageLabel_->size().height() };
+  }
+
+  QPointF ImageViewerWidget::mapScrollPointToImagePoint(
+    const QPointF &p_normalised) const
+  {
+    return QPointF{ p_normalised.x() * normalImageWidth(), 
+      p_normalised.y() * normalImageHeight() };
   }
 
 
-  void ImageViewerWidget::mouseReleaseEvent(QMouseEvent *e)
+  void ImageViewerWidget::mousePressEvent(QMouseEvent *e)
   {
-    
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p_normalised = normalisePoint(p);
+
+    if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
+         0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
+
+      QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
+      emit imageMousePress(p_transformed);
+    }
 
     update();
+  }
+
+  void ImageViewerWidget::mouseReleaseEvent(QMouseEvent *e)
+  {
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p_normalised = normalisePoint(p);
+
+    if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
+         0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
+
+      QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
+      emit imageMouseRelease(p_transformed);
+    }
+
+    update();   
   }
 
   void ImageViewerWidget::mouseDoubleClickEvent(QMouseEvent *e)
   {
+    QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 3 };
+    QPointF p_normalised = normalisePoint(p);
+
+    if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
+         0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
+
+      QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
+      emit imageMouseDoubleClick(p_transformed);
+    }
+
     update();
   }
 }

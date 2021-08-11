@@ -2,12 +2,14 @@
 
 #include <QWidget>
 #include <QPointF>
+#include <QSize>
 
 class QLabel;
 class QScrollArea;
 class QImage;
 class QScrollBar;
 class QMouseEvent;
+
 
 
 namespace ImageViewerWidget
@@ -25,6 +27,10 @@ namespace ImageViewerWidget
     bool loadImage(const QString &fileName);
 
     void setImage(const QImage &newImage);
+
+    inline QSize normalImageSize() const { return normalImageSize_; }
+    inline int normalImageWidth() const { return normalImageSize_.width(); }
+    inline int normalImageHeight() const { return normalImageSize_.height(); }
 
     void fitToWidget(); 
     void unfitToWidget();    
@@ -49,8 +55,14 @@ namespace ImageViewerWidget
 
   private:
     void adjustScrollBar(QScrollBar *scrollBar, double factor);
+    
+    QPointF scrollAreaPointMap(const QPointF &p) const;
+    QPointF normalisePoint(const QPointF &p) const;
+    QPointF mapScrollPointToImagePoint(const QPointF &p_normalised) const;
+
 
   private:
+    QSize normalImageSize_;
     QImage image_;
     QLabel *imageLabel_;
     QScrollArea *scrollArea_;
