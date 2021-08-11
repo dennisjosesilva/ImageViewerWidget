@@ -8,7 +8,7 @@ include_directories(include)
 
 # C++ STANDARD VERSION
 set(CMAKE_CXX_STANDARD 14)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # QT CONFIG
 find_package(Qt5 REQUIRED Widgets Core Gui REQUIRED)
