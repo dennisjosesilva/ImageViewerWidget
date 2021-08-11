@@ -1,7 +1,7 @@
 #pragma once 
 
 #include <QWidget>
-#include <QPoint>
+#include <QPointF>
 
 class QLabel;
 class QScrollArea;
@@ -43,9 +43,9 @@ namespace ImageViewerWidget
 
   public:
   signals:
-    void imageMousePress(const QPoint &p);
-    void imageMouseRelease(const QPoint &p);
-    void imageMouseDoubleClick(const QPoint &p);
+    void imageMousePress(const QPointF &p);
+    void imageMouseRelease(const QPointF &p);
+    void imageMouseDoubleClick(const QPointF &p);
 
   private:
     void adjustScrollBar(QScrollBar *scrollBar, double factor);

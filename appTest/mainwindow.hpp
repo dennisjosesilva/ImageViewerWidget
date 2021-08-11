@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QPointF>
 #include "ImageViewerWidget/ImageViewerWidget.hpp"
 
 namespace iv = ImageViewerWidget;
@@ -24,8 +25,11 @@ protected slots:
   void fitToWindowBtn_toggled(bool checked);
   void imageCombo_currentIndexChanged(int index);
 
+  
+
 protected:
   void loadImage(const QString &filename);
+  void imageMousePress(const QPointF &p);
 
 private:
   QMainWindow *window_;

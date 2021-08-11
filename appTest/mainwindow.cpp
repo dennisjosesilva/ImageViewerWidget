@@ -21,6 +21,7 @@ MainWidget::MainWidget(QMainWindow *window)
   
   QLayout *mainLayout = new QVBoxLayout;
   QHBoxLayout *buttonsLayout = new QHBoxLayout;
+  QHBoxLayout *imageViewerLayout = new QHBoxLayout;
 
   zoomInBtn_ = new QPushButton{"Zoom In", this};
   zoomOutBtn_ = new QPushButton{"Zoom Out", this};
@@ -43,7 +44,9 @@ MainWidget::MainWidget(QMainWindow *window)
   buttonsLayout->setSpacing(10);
 
   mainLayout->addItem(buttonsLayout);
-  mainLayout->addWidget(imageViewer_);
+
+  imageViewerLayout->addWidget(imageViewer_);
+  mainLayout->addItem(imageViewerLayout);
 
   imageCombo_ = new QComboBox(this);
   imageCombo_->addItem("Zuckerberg", "../../images/Zuckerberg.pgm");
@@ -60,6 +63,8 @@ MainWidget::MainWidget(QMainWindow *window)
 
   loadImage("../../images/Zuckerberg.pgm");
 
+  connect(imageViewer_, &iv::ImageViewerWidget::imageMousePress, this, &MainWidget::imageMousePress);
+
   setLayout(mainLayout);
 }
 
@@ -71,6 +76,12 @@ void MainWidget::loadImage(const QString &fileName)
   QString message = 
     tr("load: %4, dim: %1 x %2, depth: %3").arg(image.width())
       .arg(image.height()).arg(image.depth()).arg(fileName);
+  window_->statusBar()->showMessage(message);
+}
+
+void MainWidget::imageMousePress(const QPointF &p)
+{
+  QString message = tr("mouse press at (%1, %2)").arg(p.x()).arg(p.y());
   window_->statusBar()->showMessage(message);
 }
 

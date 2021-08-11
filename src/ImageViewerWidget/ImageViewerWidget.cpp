@@ -22,12 +22,19 @@ namespace ImageViewerWidget
 
     imageLabel_->setBackgroundRole(QPalette::Base);
     imageLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    imageLabel_->setMargin(0);
+    
+    imageLabel_->setFrameStyle(QFrame::NoFrame);        
     imageLabel_->setScaledContents(true);
 
     scrollArea_->setBackgroundRole(QPalette::Dark);
-    scrollArea_->setWidget(imageLabel_);
+    scrollArea_->setFrameStyle(QFrame::NoFrame);
+    scrollArea_->setWidget(imageLabel_);    
     scrollArea_->setVisible(false);
     
+    mainLayout->setContentsMargins(0, 0, 0, 0);    
+    mainLayout->setSpacing(0);    
+
     mainLayout->addWidget(scrollArea_);
     setLayout(mainLayout);
   }
@@ -111,12 +118,22 @@ namespace ImageViewerWidget
 
   void ImageViewerWidget::mousePressEvent(QMouseEvent *e)
   {
+    QPointF scrollOffset = QPointF(scrollArea_->horizontalScrollBar()->value(), 
+      scrollArea_->verticalScrollBar()->value());
+
+    QPointF p = ((e->localPos() + scrollOffset) / scaleFactor_) - QPointF(2,2); 
+    
+    if (imageLabel_->rect().adjusted(0, 0, 1, 1).contains(p.x(), p.y()))
+      emit imageMousePress(p);
+    
     update();
   }
 
 
   void ImageViewerWidget::mouseReleaseEvent(QMouseEvent *e)
   {
+    
+
     update();
   }
 

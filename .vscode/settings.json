@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "qvboxlayout": "cpp"
+    "qvboxlayout": "cpp",
+    "qpointf": "cpp"
   }
 }
