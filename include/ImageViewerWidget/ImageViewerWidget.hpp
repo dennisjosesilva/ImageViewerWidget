@@ -31,6 +31,7 @@ namespace ImageViewerWidget
     inline QSize normalImageSize() const { return normalImageSize_; }
     inline int normalImageWidth() const { return normalImageSize_.width(); }
     inline int normalImageHeight() const { return normalImageSize_.height(); }
+    inline QScrollArea *scrollAreaWidget() { return scrollArea_; }
 
     void fitToWidget(); 
     void unfitToWidget();    

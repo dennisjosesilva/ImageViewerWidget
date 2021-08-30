@@ -74,6 +74,8 @@ namespace ImageViewerWidget
 
     scrollArea_->setVisible(true);
     scrollArea_->setEnabled(true);
+
+    imageLabel_->update();
   }
 
   void ImageViewerWidget::fitToWidget()
