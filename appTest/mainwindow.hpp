@@ -22,6 +22,8 @@ protected slots:
   void zoomInBtn_clicked();
   void zoomOutBtn_clicked();
   void normalSizeBtn_clicked();
+  void addOverlayBtn_clicked();
+  void removeOverlayBtn_clicked();
   void fitToWindowBtn_toggled(bool checked);
   void imageCombo_currentIndexChanged(int index);
 
@@ -41,6 +43,8 @@ private:
   QPushButton *zoomInBtn_;
   QPushButton *zoomOutBtn_;
   QPushButton *normalSizeBtn_;
+  QPushButton *addOverlayBtn_;
+  QPushButton *removeOverlayBtn_;
   QCheckBox *fitToWindowBtn_;
   QComboBox *imageCombo_;
 

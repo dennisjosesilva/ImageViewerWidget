@@ -10,6 +10,8 @@
 #include <QImageWriter>
 #include <QImageReader>
 
+#include <QPainter>
+
 namespace ImageViewerWidget
 {
   ImageViewerWidget::ImageViewerWidget(QWidget *parent)
@@ -66,6 +68,9 @@ namespace ImageViewerWidget
   void ImageViewerWidget::setImage(const QImage &newImage)
   {
     image_ = newImage;
+    resultImage_ = newImage;
+    overlayImage_ = QImage{};
+
     imageLabel_->setPixmap(QPixmap::fromImage(image_));
     scaleFactor_ = 1.0;
     normalImageSize_ = QSize{newImage.size()};
@@ -75,6 +80,35 @@ namespace ImageViewerWidget
     scrollArea_->setVisible(true);
     scrollArea_->setEnabled(true);
 
+    imageLabel_->update();
+  }
+
+  void ImageViewerWidget::setOverlayImage(const QImage &secondImage)
+  {
+    overlayImage_ = secondImage;
+    performImageComposition();
+  }
+
+  void ImageViewerWidget::removeOverlay()
+  {
+    overlayImage_ = QImage{};
+    resultImage_ = image_;
+    imageLabel_->setPixmap(QPixmap::fromImage(resultImage_));
+    imageLabel_->update();
+  }
+
+  void ImageViewerWidget::performImageComposition()
+  {
+    resultImage_ = QImage{image_.size(), QImage::Format_ARGB32_Premultiplied};
+    QPainter painter{&resultImage_};
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(imageLabel_->rect(), Qt::transparent);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(0, 0, image_); // destination image
+    painter.drawImage(0, 0, overlayImage_);  // source image
+    painter.end();
+
+    imageLabel_->setPixmap(QPixmap::fromImage(resultImage_));
     imageLabel_->update();
   }
 

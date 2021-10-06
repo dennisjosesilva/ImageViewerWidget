@@ -3,14 +3,13 @@
 #include <QWidget>
 #include <QPointF>
 #include <QSize>
+#include <QList>
 
 class QLabel;
 class QScrollArea;
 class QImage;
 class QScrollBar;
 class QMouseEvent;
-
-
 
 namespace ImageViewerWidget
 {
@@ -22,6 +21,8 @@ namespace ImageViewerWidget
 
     inline QImage& image() { return image_; };
     inline const QImage& image() const { return image_; }
+    inline const QImage& overlayImage() const { return overlayImage_; }
+    inline const QImage& resultImage() const { return resultImage_; }
 
     bool saveImage(const QString &fileName);
     bool loadImage(const QString &fileName);
@@ -42,6 +43,11 @@ namespace ImageViewerWidget
     void scaleImage(double factor); 
 
     inline double scaleFactor() const { return scaleFactor_; }
+
+    void setOverlayImage(const QImage &secondImage);
+    void removeOverlay();
+
+    void performImageComposition();
 
   protected:
     void mousePressEvent(QMouseEvent *e) override;
@@ -68,5 +74,8 @@ namespace ImageViewerWidget
     QLabel *imageLabel_;
     QScrollArea *scrollArea_;
     double scaleFactor_;
+    QImage overlayImage_;
+
+    QImage resultImage_;
   };
 }

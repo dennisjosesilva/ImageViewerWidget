@@ -26,20 +26,27 @@ MainWidget::MainWidget(QMainWindow *window)
   zoomInBtn_ = new QPushButton{"Zoom In", this};
   zoomOutBtn_ = new QPushButton{"Zoom Out", this};
   normalSizeBtn_ = new QPushButton{"Normal Size", this};
-  
+  addOverlayBtn_ = new QPushButton{"Add Overlay", this};
+  removeOverlayBtn_ = new QPushButton{"Remove Overlay", this};
+
   fitToWindowBtn_ = new QCheckBox{"Fit to Window", this};
   fitToWindowBtn_->setChecked(false);
 
   buttonsLayout->addWidget(zoomInBtn_);
   buttonsLayout->addWidget(zoomOutBtn_);
   buttonsLayout->addWidget(normalSizeBtn_);
+  buttonsLayout->addWidget(addOverlayBtn_);
+  buttonsLayout->addWidget(removeOverlayBtn_);
   buttonsLayout->addWidget(fitToWindowBtn_);
+  
 
   connect(zoomInBtn_, &QPushButton::clicked, this, &MainWidget::zoomInBtn_clicked);
   connect(zoomOutBtn_, &QPushButton::clicked, this, &MainWidget::zoomOutBtn_clicked);
+  connect(addOverlayBtn_, &QPushButton::clicked, this, &MainWidget::addOverlayBtn_clicked);
+  connect(removeOverlayBtn_, &QPushButton::clicked, this, &MainWidget::removeOverlayBtn_clicked);
   connect(normalSizeBtn_, &QPushButton::clicked, this, &MainWidget::normalSizeBtn_clicked);
   connect(fitToWindowBtn_, &QCheckBox::toggled, this, &MainWidget::fitToWindowBtn_toggled);
-
+  
   buttonsLayout->addStretch();
   buttonsLayout->setSpacing(10);
 
@@ -112,6 +119,33 @@ void MainWidget::zoomOutBtn_clicked()
 void MainWidget::normalSizeBtn_clicked()
 {
   imageViewer_->normalSize();
+}
+
+void MainWidget::addOverlayBtn_clicked()
+{
+  const QImage &f = imageViewer_->image();
+  QImage f100{f.size(), QImage::Format_ARGB32};
+
+  for (int l=0; l < f.height(); ++l) {
+    const uchar *fline = f.constScanLine(l);
+    QRgb *f100line = reinterpret_cast<QRgb*>(f100.scanLine(l));
+    
+    for (int c=0; c < f.width(); ++c) {
+      if (fline[c] > 100) {
+        f100line[c] = qRgba(255, 0, 0, 128);
+      }
+      else {
+        f100line[c] = qRgba(255, 255, 255, 0);
+      }
+    }
+  }
+
+  imageViewer_->setOverlayImage(f100);
+}
+
+void MainWidget::removeOverlayBtn_clicked()
+{
+  imageViewer_->removeOverlay();
 }
 
 void MainWidget::imageCombo_currentIndexChanged(int index)
