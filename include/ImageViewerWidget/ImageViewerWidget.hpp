@@ -56,9 +56,9 @@ namespace ImageViewerWidget
 
   public:
   signals:
-    void imageMousePress(const QPointF &p);
-    void imageMouseRelease(const QPointF &p);
-    void imageMouseDoubleClick(const QPointF &p);
+    void imageMousePress(const QPointF &p, QMouseEvent *e);
+    void imageMouseRelease(const QPointF &p, QMouseEvent *e);
+    void imageMouseDoubleClick(const QPointF &p, QMouseEvent *e);
 
   private:
     void adjustScrollBar(QScrollBar *scrollBar, double factor);

@@ -179,12 +179,12 @@ namespace ImageViewerWidget
   {
     QPointF p = scrollAreaPointMap(e->localPos()) - QPointF{ 2, 4 };
     QPointF p_normalised = normalisePoint(p);
-
+    
     if ( 0 <= p_normalised.x() && p_normalised.x() < 1.0 && 
          0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
 
       QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
-      emit imageMousePress(p_transformed);
+      emit imageMousePress(p_transformed, e);
     }
 
     update();
@@ -199,7 +199,7 @@ namespace ImageViewerWidget
          0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
 
       QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
-      emit imageMouseRelease(p_transformed);
+      emit imageMouseRelease(p_transformed, e);
     }
 
     update();   
@@ -214,7 +214,7 @@ namespace ImageViewerWidget
          0 <= p_normalised.y() && p_normalised.y() < 1.0) {      
 
       QPointF p_transformed = mapScrollPointToImagePoint(p_normalised);
-      emit imageMouseDoubleClick(p_transformed);
+      emit imageMouseDoubleClick(p_transformed, e);
     }
 
     update();

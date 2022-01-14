@@ -88,21 +88,38 @@ void MainWidget::loadImage(const QString &fileName)
   window_->statusBar()->showMessage(message);
 }
 
-void MainWidget::imageMousePress(const QPointF &p)
+void MainWidget::imageMousePress(const QPointF &p, QMouseEvent *e)
 {
-  QString message = tr("mouse press at (%1, %2)").arg(p.x()).arg(p.y());
+  QString message;
+  if (e->modifiers() & Qt::ControlModifier)
+    message = tr("mouse press at (%1, %2) with Ctrl").arg(p.x()).arg(p.y());
+  else 
+    message = tr("mouse press at (%1, %2)").arg(p.x()).arg(p.y());
+
   window_->statusBar()->showMessage(message);
 }
 
-void MainWidget::imageMouseRelease(const QPointF &p)
+void MainWidget::imageMouseRelease(const QPointF &p, QMouseEvent *e)
 {
-  QString message = tr("mouse release at (%1, %2)").arg(p.x()).arg(p.y());
+  QString message;
+  if (e->modifiers() & Qt::ControlModifier)
+    message = tr("mouse release at (%1, %2) with Ctrl").arg(p.x()).arg(p.y());
+  else 
+    message = tr("mouse release at (%1, %2)").arg(p.x()).arg(p.y());
+
   window_->statusBar()->showMessage(message);
 }
 
-void MainWidget::imageMouseDoubleClick(const QPointF &p)
+void MainWidget::imageMouseDoubleClick(const QPointF &p, QMouseEvent *e)
 {
-  QString message = tr("mouse double click at (%1, %2)").arg(p.x()).arg(p.y());
+  QString message;
+  
+  if (e->modifiers() & Qt::ControlModifier)
+    message = tr("mouse double click at (%1, %2) with Ctrl").arg(p.x()).arg(p.y());
+  else 
+    message = tr("mouse double click at *(%1, %2)").arg(p.x()).arg(p.y());
+
+  message = tr("mouse double click at (%1, %2)").arg(p.x()).arg(p.y());
   window_->statusBar()->showMessage(message);
 }
 
